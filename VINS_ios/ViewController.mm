@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "utility.hpp"
 #import "CameraUtils.h"
+#import "UDPEcho.h"
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *X_label;
@@ -63,6 +64,7 @@ IMU_MSG imuData;
 KEYFRAME_DATA vinsData;
 
 NSMutableString *poseBuf = [[NSMutableString alloc] init];
+UDPEcho *my_echo = [[UDPEcho alloc] init];
 
 /*************************** Save data for debug ***************************/
 
@@ -1265,7 +1267,10 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
         stringView = [NSString stringWithFormat:@"Z:%.2f",z_view];
         [_Z_label setText:stringView];
         
-        if (self.pos_recording) [poseBuf appendString:[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view]];
+        if (self.pos_recording) {
+            [poseBuf appendString:[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view]];
+            [my_echo sendData:[[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
     }
     stringView = [NSString stringWithFormat:@"BUF:%d",waiting_lists];
     [_buf_label setText:stringView];
@@ -1324,6 +1329,7 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
 -(IBAction)switchRecord:(UISwitch*)sender {
     if (sender.on) {
         self.pos_recording = YES;
+        [my_echo startConnectedToHostName:@"192.168.0.15" port:14550];
     } else {
         self.pos_recording = NO;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
