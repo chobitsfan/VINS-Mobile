@@ -62,6 +62,8 @@ IMU_MSG imuData;
 
 KEYFRAME_DATA vinsData;
 
+NSMutableString *poseBuf = [[NSMutableString alloc] init];
+
 /*************************** Save data for debug ***************************/
 
 /******************************* UI CONFIG *******************************/
@@ -1262,6 +1264,8 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
         [_Y_label setText:stringView];
         stringView = [NSString stringWithFormat:@"Z:%.2f",z_view];
         [_Z_label setText:stringView];
+        
+        if (self.pos_recording) [poseBuf appendString:[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view]];
     }
     stringView = [NSString stringWithFormat:@"BUF:%d",waiting_lists];
     [_buf_label setText:stringView];
@@ -1315,6 +1319,19 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
 - (IBAction)fovSliderValueChanged:(id)sender {
     self.fovLabel.text = [[NSNumber numberWithFloat:self.fovSlider.value] stringValue];
     
+}
+
+-(IBAction)switchRecord:(UISwitch*)sender {
+    if (sender.on) {
+        self.pos_recording = YES;
+    } else {
+        self.pos_recording = NO;
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *filePath = [documentsPath stringByAppendingPathComponent:@"POSE"]; //Add the file name
+        NSData *data = [poseBuf dataUsingEncoding:NSUTF8StringEncoding];
+        [data writeToFile:filePath atomically:YES];
+    }
 }
 
 - (void) handlePan:(UIPanGestureRecognizer*) recognizer

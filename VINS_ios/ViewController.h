@@ -50,6 +50,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *switchUI;
 
 @property (nonatomic) BOOL switchUIAREnabled;
+@property (nonatomic) BOOL pos_recording;
 
 - (void)showInputView;
 
