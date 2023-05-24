@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *feature_label3;
 @property (weak, nonatomic) IBOutlet UISlider *fovSlider;
 @property (weak, nonatomic) IBOutlet UILabel *fovLabel;
+@property (weak, nonatomic) IBOutlet UILabel *quat_label;
 @end
 
 @implementation ViewController
@@ -1240,9 +1241,9 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
             finish_init = true;
         }
         
-        float x_view = (float)vins.correct_Ps[frame_cnt][0];
-        float y_view = (float)vins.correct_Ps[frame_cnt][1];
-        float z_view = (float)vins.correct_Ps[frame_cnt][2];
+        float x_view = (float)vins.correct_Ps[WINDOW_SIZE-1][0];
+        float y_view = (float)vins.correct_Ps[WINDOW_SIZE-1][1];
+        float z_view = (float)vins.correct_Ps[WINDOW_SIZE-1][2];
         if(x_view_last == -5000)
         {
             x_view_last = x_view;
@@ -1267,9 +1268,26 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
         stringView = [NSString stringWithFormat:@"Z:%.2f",z_view];
         [_Z_label setText:stringView];
         
+        //Quaternionf qq(q.w(),-q.z(),-q.x(),q.y());
+        //Matrix3f mm = AngleAxisf(-0.5*M_PI,Vector3f::UnitY())*vins.correct_Rs[WINDOW_SIZE-1];
+        //Vector3f ea = mm.eulerAngles(2,1,0);
+        //[_quat_label setText:[NSString stringWithFormat:@"%.2f,%.2f,%.2f,%.2f\n",q.w(),q.x(),q.y(),q.z()]];
+        //Matrix3f rr;
+        //rr << 0,0,-1,0,1,0,1,0,0;
+        //Matrix3f new_r = rr*vins.correct_Rs[WINDOW_SIZE-1];
+        //Vector3f ea = vins.correct_Rs[WINDOW_SIZE-1].eulerAngles(2,1,0);
+        Matrix3f r_in;
+        r_in << 0, 0, 1, 0, 1, 0, -1, 0, 0;
+        Matrix3f new_r = vins.correct_Rs[WINDOW_SIZE-1]*r_in;
+        Vector3f ea = new_r.eulerAngles(2,1,0);
+        [_quat_label setText:[NSString stringWithFormat:@"%.2f,%.2f,%.2f\n",ea[0],ea[1],ea[2]]];
         if (self.pos_recording) {
-            [poseBuf appendString:[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view]];
-            [my_echo sendData:[[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view] dataUsingEncoding:NSUTF8StringEncoding]];
+            Quaternionf q(new_r);
+            float pose_buf[7] = {q.w(), q.x(), q.y(), q.z(), x_view, y_view, z_view};
+            NSData* my_data = [NSData dataWithBytes:pose_buf length:sizeof(pose_buf)];
+            [my_echo sendData:my_data];
+            //[poseBuf appendString:[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view]];
+            //[my_echo sendData:[[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view] dataUsingEncoding:NSUTF8StringEncoding]];
         }
     }
     stringView = [NSString stringWithFormat:@"BUF:%d",waiting_lists];
@@ -1329,7 +1347,7 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
 -(IBAction)switchRecord:(UISwitch*)sender {
     if (sender.on) {
         self.pos_recording = YES;
-        [my_echo startConnectedToHostName:@"192.168.0.15" port:14550];
+        [my_echo startConnectedToHostName:@"192.168.0.1" port:14550];
     } else {
         self.pos_recording = NO;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

@@ -129,6 +129,13 @@
                                     <action selector="switchRecord:" destination="2" eventType="valueChanged" id="Fc2-hL-6p9"/>
                                 </connections>
                             </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="quaternion" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94j-M5-WqO">
+                                <rect key="frame" x="272" y="311" width="213" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -221,6 +228,7 @@
                         <outlet property="imageView" destination="gjU-6U-uHz" id="nst-cF-pIB"/>
                         <outlet property="loopButton" destination="V0d-jl-nvQ" id="7Uq-dc-Lfw"/>
                         <outlet property="loop_label" destination="CUs-aL-cWm" id="JTA-9p-sOL"/>
+                        <outlet property="quat_label" destination="94j-M5-WqO" id="hgj-qm-Kfw"/>
                         <outlet property="reinitButton" destination="bae-7z-cjz" id="3Qf-Iu-Li7"/>
                         <outlet property="switchUI" destination="f0z-Ib-rgJ" id="KrL-ef-G9F"/>
                         <outlet property="total_odom_label" destination="MjG-Tz-jAX" id="G3W-t4-n56"/>
@@ -238,7 +246,7 @@
                     </connections>
                 </pinchGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="26.086956521739133" y="26.086956521739133"/>
+            <point key="canvasLocation" x="25.637181409295355" y="24.800000000000001"/>
         </scene>
     </scenes>
     <resources>

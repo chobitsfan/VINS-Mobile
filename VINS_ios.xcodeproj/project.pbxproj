@@ -969,7 +969,7 @@
 					"$(PROJECT_DIR)/ThirdParty",
 					/usr/local/include,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/VINS_ThirdPartyLib/ceres-solver/ceres-bin/lib",
 					"$(PROJECT_DIR)/ThirdParty",
@@ -1034,7 +1034,7 @@
 					"$(PROJECT_DIR)/ThirdParty",
 					/usr/local/include,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/VINS_ThirdPartyLib/ceres-solver/ceres-bin/lib",
 					"$(PROJECT_DIR)/ThirdParty",
@@ -1056,9 +1056,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3M8PRTJVH6;
 				INFOPLIST_FILE = VINS_ios/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "mobile.VINS-ios-hh";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1068,9 +1070,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 3M8PRTJVH6;
 				INFOPLIST_FILE = VINS_ios/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "mobile.VINS-ios-hh";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
