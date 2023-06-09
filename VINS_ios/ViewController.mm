@@ -1283,7 +1283,7 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
         //Matrix3f new_r = rr*vins.correct_Rs[WINDOW_SIZE-1];
         //Vector3f ea = vins.correct_Rs[WINDOW_SIZE-1].eulerAngles(2,1,0);
         Matrix3f r_in;
-        r_in << 0, 0, 1, 0, 1, 0, -1, 0, 0;
+        r_in << 0, 0, 1, 0, 1, 0, -1, 0, 0; //rotation 90 degree around y-axis, cos 0 sin 0 1 0 -sin 0 cos
         Matrix3f new_r = vins.correct_Rs[WINDOW_SIZE-1]*r_in;
         Vector3f ea = new_r.eulerAngles(2,1,0);
         [_quat_label setText:[NSString stringWithFormat:@"%.2f,%.2f,%.2f\n",ea[0],ea[1],ea[2]]];
