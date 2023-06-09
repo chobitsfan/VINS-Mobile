@@ -1226,6 +1226,12 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
         [_feature_label3 setHidden:NO];
         [indicator setHidden:NO];
         [featureImageView setHidden:NO];
+        
+        if (self.pos_recording) {
+            float pose_buf[8] = {0};
+            NSData* my_data = [NSData dataWithBytes:pose_buf length:sizeof(pose_buf)];
+            [my_echo sendData:my_data];
+        }
     }
     else
     {
@@ -1283,7 +1289,7 @@ vector<IMU_MSG> gyro_buf;  // for Interpolation
         [_quat_label setText:[NSString stringWithFormat:@"%.2f,%.2f,%.2f\n",ea[0],ea[1],ea[2]]];
         if (self.pos_recording) {
             Quaternionf q(new_r);
-            float pose_buf[7] = {q.w(), q.x(), q.y(), q.z(), x_view, y_view, z_view};
+            float pose_buf[8] = {1, q.w(), q.x(), q.y(), q.z(), x_view, y_view, z_view};
             NSData* my_data = [NSData dataWithBytes:pose_buf length:sizeof(pose_buf)];
             [my_echo sendData:my_data];
             //[poseBuf appendString:[NSString stringWithFormat:@"%.3f,%.3f,%.3f\n",x_view,y_view,z_view]];
